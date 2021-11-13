@@ -8,25 +8,26 @@ const client = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-const API_URL =
-	'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium';
-
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
 async function query(payload) {
-	var response = await fetch(API_URL, {
-		headers: { Authorization: `Bearer ${dialogpt_token}` },
-		method: 'POST',
-		body: JSON.stringify({
-			inputs: { text: payload },
-			parameter: {
-				top_p: 0.9,
-				temperature: 1.2,
-			},
-		}),
-	});
+	var response = await fetch(
+		'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
+		{
+			headers: { Authorization: `Bearer ${dialogpt_token}` },
+			method: 'POST',
+			body: JSON.stringify({
+				inputs: { text: payload },
+				parameter: {
+					top_p: 0.9,
+					temperature: 1.2,
+					pad_token_id: 50256
+				},
+			}),
+		}
+	);
 
 	const result = await response.json();
 	return result;
@@ -45,23 +46,26 @@ client.on('messageCreate', (message) => {
 			embeds: [
 				new MessageEmbed()
 					.setColor('#fb8c00')
-					.setTitle('ProCodeCG Bot')
+					.setTitle('PCG Bot')
 					.setDescription('List of commands')
 					.addField('!!help', 'Shows this message')
 					.addField('!!ping', 'Check roundtrip latency')
 					.addField('!!chat', 'Chat with DialoGPT')
 					.setTimestamp()
 					.setFooter(
-						'ProCodeCG Bot',
-						'https://procodecg.com/images/procodecg-new-logo.png'
+						'the prank collection',
 					),
 			],
 		});
 	}
 
 	if (command == 'ping') {
-		message.channel.send('Pinging...').then(sent => {
-			sent.edit(`Roundtrip latency: ${sent.createdTimestamp - message.createdTimestamp}ms`);
+		message.channel.send('Pinging...').then((sent) => {
+			sent.edit(
+				`Roundtrip latency: ${
+					sent.createdTimestamp - message.createdTimestamp
+				}ms`
+			);
 		});
 	}
 
@@ -74,7 +78,12 @@ client.on('messageCreate', (message) => {
 
 		try {
 			query(text).then((response) => {
-				message.channel.send(response.generated_text);
+
+				if (response.generated_text == '' || undefined) {
+					return message.channel.send(
+						'DialoGPT could not generate a response!'
+					);
+				} else { message.channel.send(response.generated_text); }
 			});
 		} catch (err) {
 			message.channel.send(
