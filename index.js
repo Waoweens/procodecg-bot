@@ -1,14 +1,18 @@
 const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const fs = require('fs');
+const { Client, Intents, MessageEmbed, Collection } = require('discord.js');
 const { prefix, token, dialogpt_token } = require('./config.json');
 
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.GUILD_WEBHOOKS],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_WEBHOOKS],
 });
+client.commands = new Collection();
 
 client.once('ready', () => {
+	client.user.setActivity('your messages', { type: 'WATCHING' });
+
 	console.log('Ready!');
 });
 
