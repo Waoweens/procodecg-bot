@@ -1,5 +1,5 @@
 Update .gitignore
-Prefix now in token
+Prefix now in config
 Added Webhook intent
 Split commands to multiple files for better organizing
 Add status
