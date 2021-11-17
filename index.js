@@ -69,9 +69,9 @@ client.on('messageCreate', (message) => {
 
 	try {
 		client.commands.get(command).execute(message, args);
-	} catch (error) {
-		console.error(error);
-		message.reply('An error occured while trying to tun this command.\n\n' + error);
+	} catch (err) {
+		console.error(err);
+		message.reply('An error occured while trying to tun this command.\n\n' + err);
 	}
 });
 
