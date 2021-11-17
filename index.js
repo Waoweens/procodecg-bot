@@ -1,6 +1,5 @@
 const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args));
-
 const fs = require('fs');
 const {
 	Client,
@@ -10,7 +9,12 @@ const {
 	Permissions,
 	Guild,
 } = require('discord.js');
-const { token, dialogpt_token, prefix, ownerID } = require('./config.json');
+const {
+	token,
+	dialogpt_token,
+	prefix,
+	ownerID
+} = require('./config.json');
 
 const client = new Client({
 	intents: [
@@ -19,11 +23,16 @@ const client = new Client({
 		Intents.FLAGS.GUILD_WEBHOOKS,
 	],
 });
+
 client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 client.once('ready', () => {
 	client.user.setActivity('your messages', { type: 'WATCHING' });
-
 	console.log('Ready!');
 });
 
@@ -54,58 +63,15 @@ client.on('messageCreate', (message) => {
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
-	const text = args.join(' ');
+	if (command == 'dev') message.channel.send('["develop" branch](https://github.com/Waoweens/procodecg-bot/tree/develop) of PCG bot. Experiments are tested here');
 
-	if (command == 'dev') message.channel.send('["develop" branch](https://github.com/Waoweens/procodecg-bot/tree/develop) of PCG bot. Experiments are tested here')
-	if (command == 'help') {
-		message.channel.send({
-			embeds: [
-				new MessageEmbed()
-					.setColor('#fb8c00')
-					.setTitle('PCG Bot')
-					.setDescription('List of commands')
-					.addField('!!help', 'Shows this message')
-					.addField('!!ping', 'Check roundtrip latency')
-					.addField('!!chat', 'Chat with DialoGPT')
-					.setTimestamp()
-					.setFooter('the prank collection'),
-			],
-		});
-	}
+	if (!client.commands.has(command)) return;
 
-	if (command == 'ping') {
-		message.channel.send('Pinging...').then((sent) => {
-			sent.edit(
-				`Roundtrip latency: ${
-					sent.createdTimestamp - message.createdTimestamp
-				}ms`
-			);
-		});
-	}
-
-	if (command == 'chat') {
-		if (!args.length) {
-			return message.channel.send(
-				'You must provide a message to chat with DialoGPT!'
-			);
-		}
-
-		try {
-			query(text).then((response) => {
-				if (response.generated_text == '' || undefined) {
-					return message.channel.send(
-						'DialoGPT could not generate a response!'
-					);
-				} else {
-					message.channel.send(response.generated_text);
-				}
-			});
-		} catch (err) {
-			message.channel.send(
-				'An error occured while trying to tun this command.\n\n' + err
-			);
-			console.log(err);
-		}
+	try {
+		client.commands.get(command).execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('An error occured while trying to tun this command.\n\n' + error);
 	}
 });
 
