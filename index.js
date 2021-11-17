@@ -10,7 +10,7 @@ const {
 	Permissions,
 	Guild,
 } = require('discord.js');
-const { prefix, token, dialogpt_token } = require('./config.json');
+const { token, dialogpt_token, prefix, ownerID } = require('./config.json');
 
 const client = new Client({
 	intents: [
