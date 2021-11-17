@@ -2,10 +2,10 @@ const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const { Client, Intents, MessageEmbed } = require('discord.js');
-const { token, dialogpt_token } = require('./config.json');
+const { prefix, token, dialogpt_token } = require('./config.json');
 
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.GUILD_WEBHOOKS],
 });
 
 client.once('ready', () => {
@@ -34,9 +34,9 @@ async function query(payload) {
 }
 
 client.on('messageCreate', (message) => {
-	if (!message.content.startsWith('!!') || message.author.bot) return;
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice('!!'.length).trim().split(/ +/);
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
 	const text = args.join(' ');
