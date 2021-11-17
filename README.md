@@ -3,10 +3,10 @@
 ## config.json
 ```json
 {
-	"token": "your discord bot token",
-	"dialogpt_token": "your DialoGPT token",
-	"prefix": "your prefix",
-	"ownerID": "Bot owners user ID"
+  "token": "your discord bot token",
+  "dialogpt_token": "your DialoGPT token",
+  "prefix": "your prefix",
+  "ownerID": "Bot owners user ID"
 }
 ```
 
