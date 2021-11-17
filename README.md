@@ -18,7 +18,7 @@ Copy token
 
 DialoGPT token: change to your Hugging Face DialoGPT token <br />
 Create a [Hugging Face](https://huggingface.co/) account <br />
-[Go here](https://huggingface.co/microsoft/DialoGPT-medium), click Deploy, and click `Accelerated Interface` <br />
+[Go here](https://huggingface.co/microsoft/DialoGPT-medium), click `Deploy`, and click `Accelerated Interface` <br />
 Copy token
 
 ## Running the bot
