@@ -38,8 +38,6 @@ client.on('messageCreate', (message) => {
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
-	if (command == 'dev') message.channel.send('["develop" branch](https://github.com/Waoweens/procodecg-bot/tree/develop) of PCG bot. Experiments are tested here');
-
 	if (!client.commands.has(command)) return;
 
 	try {

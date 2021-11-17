@@ -1,4 +1,6 @@
 node_modules/
 backups/
 
+commands/dev.js
+
 config.json

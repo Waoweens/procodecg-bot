@@ -1,0 +1,9 @@
+Update .gitignore
+Prefix now in token
+Added Webhook intent
+Split commands to multiple files for better organizing
+Add status
+Owner ID now in config
+new README file
+new CHANGELOG file
+Add double error handling, hopefully fixes #1
