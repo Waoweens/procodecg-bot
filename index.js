@@ -2,11 +2,22 @@ const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const fs = require('fs');
-const { Client, Intents, MessageEmbed, Collection } = require('discord.js');
+const {
+	Client,
+	Intents,
+	MessageEmbed,
+	Collection,
+	Permissions,
+	Guild,
+} = require('discord.js');
 const { prefix, token, dialogpt_token } = require('./config.json');
 
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_WEBHOOKS],
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_WEBHOOKS,
+	],
 });
 client.commands = new Collection();
 
@@ -27,7 +38,7 @@ async function query(payload) {
 				parameter: {
 					top_p: 0.9,
 					temperature: 1.2,
-					pad_token_id: 50256
+					pad_token_id: 50256,
 				},
 			}),
 		}
@@ -45,6 +56,7 @@ client.on('messageCreate', (message) => {
 
 	const text = args.join(' ');
 
+	if (command == 'dev') message.channel.send('["develop" branch](https://github.com/Waoweens/procodecg-bot/tree/develop) of PCG bot. Experiments are tested here')
 	if (command == 'help') {
 		message.channel.send({
 			embeds: [
@@ -56,9 +68,7 @@ client.on('messageCreate', (message) => {
 					.addField('!!ping', 'Check roundtrip latency')
 					.addField('!!chat', 'Chat with DialoGPT')
 					.setTimestamp()
-					.setFooter(
-						'the prank collection',
-					),
+					.setFooter('the prank collection'),
 			],
 		});
 	}
@@ -82,12 +92,13 @@ client.on('messageCreate', (message) => {
 
 		try {
 			query(text).then((response) => {
-
 				if (response.generated_text == '' || undefined) {
 					return message.channel.send(
 						'DialoGPT could not generate a response!'
 					);
-				} else { message.channel.send(response.generated_text); }
+				} else {
+					message.channel.send(response.generated_text);
+				}
 			});
 		} catch (err) {
 			message.channel.send(
