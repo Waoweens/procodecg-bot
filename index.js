@@ -1,5 +1,3 @@
-const fetch = (...args) =>
-	import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const fs = require('fs');
 const {
 	Client,
@@ -11,9 +9,7 @@ const {
 } = require('discord.js');
 const {
 	token,
-	dialogpt_token,
 	prefix,
-	ownerID
 } = require('./config.json');
 
 const client = new Client({
@@ -35,27 +31,6 @@ client.once('ready', () => {
 	client.user.setActivity('your messages', { type: 'WATCHING' });
 	console.log('Ready!');
 });
-
-async function query(payload) {
-	var response = await fetch(
-		'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
-		{
-			headers: { Authorization: `Bearer ${dialogpt_token}` },
-			method: 'POST',
-			body: JSON.stringify({
-				inputs: { text: payload },
-				parameter: {
-					top_p: 0.9,
-					temperature: 1.2,
-					pad_token_id: 50256,
-				},
-			}),
-		}
-	);
-
-	const result = await response.json();
-	return result;
-}
 
 client.on('messageCreate', (message) => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
