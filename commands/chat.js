@@ -32,13 +32,19 @@ module.exports = {
 			const result = await response.json();
 			return result;
 		}
+
 		query(args.join(' ')).then((response) => {
 			if (response.generated_text == '' || undefined) {
-				return message.channel.send(
-					'DialoGPT could not generate a response!'
-				);
+				message.channel.send('DialoGPT could not generate a response!');
 			} else {
-				message.channel.send(response.generated_text);
+				try {
+					message.channel.send(response.generated_text);
+				} catch (err) {
+					console.log(err);
+					message.channel.send(
+						'DialoGPT could not generate a response!'
+					);
+				}
 			}
 		});
 	},
