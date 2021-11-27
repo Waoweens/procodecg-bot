@@ -7,10 +7,7 @@ const {
 	Permissions,
 	Guild,
 } = require('discord.js');
-const {
-	token,
-	prefix,
-} = require('./config.json');
+const { token, prefix } = require('./config.json');
 
 const client = new Client({
 	intents: [
@@ -20,8 +17,24 @@ const client = new Client({
 	],
 });
 
+const { initializeApp } = require('firebase/app');
+
+const firebaseConfig = {
+	apiKey: 'AIzaSyDJFySLD_YxdEBDGt3Prb7SqvjfkNFEETw',
+	authDomain: 'procodecg-bot.firebaseapp.com',
+	projectId: 'procodecg-bot',
+	storageBucket: 'procodecg-bot.appspot.com',
+	messagingSenderId: '917652846171',
+	appId: '1:917652846171:web:5697d2fceda71d37d7717e',
+	measurementId: 'G-TDEDHM65W4',
+};
+
+const app = initializeApp(firebaseConfig);
+
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync('./commands')
+	.filter((file) => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
@@ -44,7 +57,9 @@ client.on('messageCreate', (message) => {
 		client.commands.get(command).execute(message, args);
 	} catch (err) {
 		console.error(err);
-		message.reply('An error occured while trying to tun this command.\n\n' + err);
+		message.reply(
+			'An error occured while trying to tun this command.\n\n' + err
+		);
 	}
 });
 
