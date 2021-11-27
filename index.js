@@ -18,6 +18,11 @@ const client = new Client({
 });
 
 const { initializeApp } = require('firebase/app');
+const {
+	getFirestore,
+	collection,
+	addDoc
+} = require('firebase/firestore');
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDJFySLD_YxdEBDGt3Prb7SqvjfkNFEETw',
@@ -30,6 +35,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+const db = getFirestore();
 
 client.commands = new Collection();
 const commandFiles = fs
