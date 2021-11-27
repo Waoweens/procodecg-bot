@@ -18,11 +18,6 @@ const client = new Client({
 });
 
 const { initializeApp } = require('firebase/app');
-const {
-	getFirestore,
-	collection,
-	addDoc
-} = require('firebase/firestore');
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDJFySLD_YxdEBDGt3Prb7SqvjfkNFEETw',
@@ -35,8 +30,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-const db = getFirestore();
 
 client.commands = new Collection();
 const commandFiles = fs
@@ -65,7 +58,7 @@ client.on('messageCreate', (message) => {
 	} catch (err) {
 		console.error(err);
 		message.reply(
-			'An error occured while trying to tun this command.\n\n' + err
+			'An error occured while trying to tun this command:\n```' + err + '```'
 		);
 	}
 });
