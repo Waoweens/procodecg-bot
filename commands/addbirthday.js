@@ -6,14 +6,15 @@ module.exports = {
 	name: 'addbirthday',
 	description: 'birthday reminder',
 	execute(message, args) {
-		var userid = message.author.id;
-		var birthday = DateTime.fromFormat(args.join(' '), 'dd/MM/yyyy HH:mm')
+		var userid = message.mentions.users.first().id;
+
+		var birthday = DateTime.fromFormat(args.slice(1).join(' '), 'dd/MM/yyyy HH:mm')
 			.setZone('Asia/Jakarta')
 
 		if (!args.length) {
-			return message.channel.send('Please provide a birthday with format `dd/MM/yyyy HH:mm`.');
+			return message.channel.send('Please mention a user and provide a birthday with format `@mention dd/MM/yyyy HH:mm`.');
 		} else if (!birthday.isValid) {
-			return message.channel.send('Invalid Date/Time Format! Please use `dd/MM/yyyy HH:mm`.');
+			return message.channel.send('Invalid message format! Please use `@mention dd/MM/yyyy HH:mm`.');
 		} else {addBirthday()}
 
 		async function addBirthday() {
