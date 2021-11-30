@@ -14,7 +14,7 @@ module.exports = {
 		if (!args.length) {
 			return message.channel.send('Please mention a user and provide a birthday with format `@mention dd/MM/yyyy HH:mm`.');
 		} else if (!birthday.isValid) {
-			return message.channel.send('Invalid message format! Please use `@mention dd/MM/yyyy HH:mm`.');
+			return message.channel.send('Invalid arguments! Please mention a user and provide a birthday with format `@mention dd/MM/yyyy HH:mm`.');
 		} else {addBirthday()}
 
 		async function addBirthday() {
