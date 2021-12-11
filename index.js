@@ -53,17 +53,16 @@ client.once('ready', () => {
 					var bdChannelId = change.doc.data().channelid;
 					var bdGuildId = change.doc.data().guildid;
 					var bdReminder = DateTime.fromISO(change.doc.data().birthday);
-					var birthRule = new schedule.RecurrenceRule();
+					var bdRule = new schedule.RecurrenceRule();
 
-					birthRule.tz = 'Asia/Jakarta';
-					birthRule.date = bdReminder.day;
-					birthRule.month = bdReminder.month - 1;
-					birthRule.year = bdReminder.year;
-					birthRule.hour = bdReminder.hour;
-					birthRule.minute = bdReminder.minute;
-					birthRule.second = [...Array(60).keys()];
+					// birthRule.tz = 'Asia/Jakarta';
+					bdRule.date = bdReminder.day;
+					bdRule.month = bdReminder.month - 1;
+					bdRule.hour = bdReminder.hour;
+					bdRule.minute = bdReminder.minute;
+					// bdRule.second = [...Array(60).keys()];
 
-					const bdJob = schedule.scheduleJob(birthRule, () => {
+					const bdJob = schedule.scheduleJob(bdRule, () => {
 						client.channels
 							.fetch(bdChannelId)
 							.then((channel) => {
@@ -74,7 +73,6 @@ client.once('ready', () => {
 							.catch((err) => {
 								console.log(err);
 							});
-						bdJob.cancel();
 					});
 
 				} catch (error) {
