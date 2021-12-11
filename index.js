@@ -55,7 +55,7 @@ client.once('ready', () => {
 					var bdReminder = DateTime.fromISO(change.doc.data().birthday);
 					var bdRule = new schedule.RecurrenceRule();
 
-					// birthRule.tz = 'Asia/Jakarta';
+					birthRule.tz = 'Asia/Jakarta';
 					bdRule.date = bdReminder.day;
 					bdRule.month = bdReminder.month - 1;
 					bdRule.hour = bdReminder.hour;
