@@ -12,19 +12,32 @@ module.exports = {
 
 		var birthday = DateTime.fromFormat(
 			args.slice(1).join(' '),
-			'dd/MM/yyyy HH:mm'
+			'dd/MM HH:mm'
 		).setZone('Asia/Jakarta');
 
-		if (!args.length) {
+		if (!args.length || message.mentions.users.size === 0) {
 			return message.channel.send(
-				'Please mention a user and provide a birthday with format `@mention dd/MM/yyyy HH:mm`.'
+				'Please mention a user and provide a birthday with format `@mention dd/MM HH:mm`.'
 			);
-		} else if (!birthday.isValid) {
+		} else if (
+			DateTime.fromFormat(
+				args.slice(1).join(' '),
+				'dd/MM/yyyy HH:mm'
+			).setZone('Asia/Jakarta').isValid
+		) {
 			return message.channel.send(
-				'Invalid arguments! Please mention a user and provide a birthday with format `@mention dd/MM/yyyy HH:mm`.'
+				'Birthdays happens once every year. Please remove the year from your reminder. Use format `@mention dd/MM HH:mm`.'
 			);
-		} else {
+		} else if (
+			DateTime.fromFormat(args.slice(1).join(' '), 'dd/MM HH:mm').setZone(
+				'Asia/Jakarta'
+			).isValid
+		) {
 			addBirthday();
+		} else {
+			return message.channel.send(
+				'Invalid Arguments! Provide a mention and birthday with format `@mention dd/MM HH:mm`.'
+			);
 		}
 
 		async function addBirthday() {
