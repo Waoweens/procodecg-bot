@@ -9,12 +9,14 @@ module.exports = {
 				new MessageEmbed()
 					.setColor('#fb8c00')
 					.setTitle('PCG Bot')
+					.setURL('https://github.com/Waoweens/procodecg-bot')
 					.setDescription('List of commands')
 					.addField('!!help', 'Shows this message')
 					.addField('!!ping', 'Check roundtrip latency')
 					.addField('!!chat', 'Chat with DialoGPT')
+					.addField('!!birthday', 'Set your birthday')
 					.setTimestamp()
-					.setFooter('the prank collection'),
+					.setFooter('I am a bot, and this action was performed automatically'),
 			],
 		});
 	},
